@@ -1,0 +1,127 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Category {
+  id         Int         @id @default(autoincrement())
+  slug       String      @unique
+  labelMk    String      @map("label_mk")
+  labelSq    String      @map("label_sq")
+  createdAt  DateTime    @default(now()) @map("created_at")
+  complaints Complaint[]
+
+  @@map("categories")
+}
+
+model PlatformAdmin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("platform_admins")
+}
+
+model User {
+  id         Int         @id @default(autoincrement())
+  fullName   String?     @map("full_name")
+  phone      String      @unique
+  isVerified Boolean     @default(false) @map("is_verified")
+  createdAt  DateTime    @default(now()) @map("created_at")
+  complaints Complaint[]
+
+  @@map("users")
+}
+
+model Company {
+  id               Int           @id @default(autoincrement())
+  name             String
+  slug             String        @unique
+  logoUrl          String?       @map("logo_url")
+  supportEmail     String?       @map("support_email")
+  isClaimed        Boolean       @default(false) @map("is_claimed")
+  reputationScore  Float         @default(0) @map("reputation_score")
+  totalEvaluations Int           @default(0) @map("total_evaluations")
+  createdAt        DateTime      @default(now()) @map("created_at")
+  agents           CompanyUser[]
+  complaints       Complaint[]
+
+  @@map("companies")
+}
+
+model CompanyUser {
+  id           Int      @id @default(autoincrement())
+  companyId    Int      @map("company_id")
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  inviteToken  String?  @map("invite_token")
+  role         String   @default("AGENT")
+  createdAt    DateTime @default(now()) @map("created_at")
+  company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("company_users")
+}
+
+enum ComplaintStatus {
+  OPEN
+  RESPONDED
+  USER_REPLIED
+  RESOLVED
+  CLOSED
+  UNANSWERED
+}
+
+model Complaint {
+  id           Int             @id @default(autoincrement())
+  userId       Int             @map("user_id")
+  companyId    Int             @map("company_id")
+  categoryId   Int             @map("category_id")
+  title        String
+  description  String
+  detectedLang String?         @map("detected_lang")
+  orderId      String?         @map("order_id")
+  privatePhone String?         @map("private_phone")
+  status       ComplaintStatus @default(OPEN)
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+
+  user         User          @relation(fields: [userId], references: [id])
+  company      Company       @relation(fields: [companyId], references: [id])
+  category     Category      @relation(fields: [categoryId], references: [id])
+  interactions Interaction[]
+  evaluation   Evaluation?
+
+  @@map("complaints")
+}
+
+model Interaction {
+  id          Int       @id @default(autoincrement())
+  complaintId Int       @map("complaint_id")
+  senderType  String    @map("sender_type") // 'USER' or 'COMPANY'
+  body        String
+  createdAt   DateTime  @default(now()) @map("created_at")
+  complaint   Complaint @relation(fields: [complaintId], references: [id])
+
+  @@map("interactions")
+}
+
+model Evaluation {
+  id            Int       @id @default(autoincrement())
+  complaintId   Int       @unique @map("complaint_id")
+  isSolved      Boolean   @map("is_solved")
+  wouldBuyAgain Boolean   @map("would_buy_again")
+  grade         Int
+  comment       String?
+  createdAt     DateTime  @default(now()) @map("created_at")
+  complaint     Complaint @relation(fields: [complaintId], references: [id])
+
+  @@map("evaluations")
+}

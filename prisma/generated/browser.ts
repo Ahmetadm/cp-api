@@ -57,3 +57,8 @@ export type Interaction = Prisma.InteractionModel
  * 
  */
 export type Evaluation = Prisma.EvaluationModel
+/**
+ * Model OtpToken
+ * 
+ */
+export type OtpToken = Prisma.OtpTokenModel

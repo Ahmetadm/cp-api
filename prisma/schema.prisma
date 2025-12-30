@@ -4,6 +4,7 @@
 generator client {
   provider = "prisma-client"
   output   = "./generated"
+  moduleFormat  = "cjs"
 }
 
 datasource db {
@@ -124,4 +125,18 @@ model Evaluation {
   complaint     Complaint @relation(fields: [complaintId], references: [id])
 
   @@map("evaluations")
+}
+
+model OtpToken {
+  id        Int      @id @default(autoincrement())
+  phone     String
+  code      String
+  type      String   @default("signin") // "signin" or "signup"
+  fullName  String?  @map("full_name")  // Only for signup
+  expiresAt DateTime @map("expires_at")
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([phone, code])
+  @@map("otp_tokens")
 }

@@ -391,7 +391,8 @@ export const ModelName = {
   CompanyUser: 'CompanyUser',
   Complaint: 'Complaint',
   Interaction: 'Interaction',
-  Evaluation: 'Evaluation'
+  Evaluation: 'Evaluation',
+  OtpToken: 'OtpToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -407,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "category" | "platformAdmin" | "user" | "company" | "companyUser" | "complaint" | "interaction" | "evaluation"
+    modelProps: "category" | "platformAdmin" | "user" | "company" | "companyUser" | "complaint" | "interaction" | "evaluation" | "otpToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1003,6 +1004,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    OtpToken: {
+      payload: Prisma.$OtpTokenPayload<ExtArgs>
+      fields: Prisma.OtpTokenFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OtpTokenFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpTokenPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OtpTokenFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpTokenPayload>
+        }
+        findFirst: {
+          args: Prisma.OtpTokenFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpTokenPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OtpTokenFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpTokenPayload>
+        }
+        findMany: {
+          args: Prisma.OtpTokenFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpTokenPayload>[]
+        }
+        create: {
+          args: Prisma.OtpTokenCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpTokenPayload>
+        }
+        createMany: {
+          args: Prisma.OtpTokenCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OtpTokenCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpTokenPayload>[]
+        }
+        delete: {
+          args: Prisma.OtpTokenDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpTokenPayload>
+        }
+        update: {
+          args: Prisma.OtpTokenUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpTokenPayload>
+        }
+        deleteMany: {
+          args: Prisma.OtpTokenDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OtpTokenUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OtpTokenUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpTokenPayload>[]
+        }
+        upsert: {
+          args: Prisma.OtpTokenUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpTokenPayload>
+        }
+        aggregate: {
+          args: Prisma.OtpTokenAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOtpToken>
+        }
+        groupBy: {
+          args: Prisma.OtpTokenGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OtpTokenGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OtpTokenCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OtpTokenCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1142,6 +1217,20 @@ export const EvaluationScalarFieldEnum = {
 } as const
 
 export type EvaluationScalarFieldEnum = (typeof EvaluationScalarFieldEnum)[keyof typeof EvaluationScalarFieldEnum]
+
+
+export const OtpTokenScalarFieldEnum = {
+  id: 'id',
+  phone: 'phone',
+  code: 'code',
+  type: 'type',
+  fullName: 'fullName',
+  expiresAt: 'expiresAt',
+  used: 'used',
+  createdAt: 'createdAt'
+} as const
+
+export type OtpTokenScalarFieldEnum = (typeof OtpTokenScalarFieldEnum)[keyof typeof OtpTokenScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1353,6 +1442,7 @@ export type GlobalOmitConfig = {
   complaint?: Prisma.ComplaintOmit
   interaction?: Prisma.InteractionOmit
   evaluation?: Prisma.EvaluationOmit
+  otpToken?: Prisma.OtpTokenOmit
 }
 
 /* Types for Logging */

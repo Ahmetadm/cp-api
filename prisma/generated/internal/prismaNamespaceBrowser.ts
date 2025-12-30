@@ -58,7 +58,8 @@ export const ModelName = {
   CompanyUser: 'CompanyUser',
   Complaint: 'Complaint',
   Interaction: 'Interaction',
-  Evaluation: 'Evaluation'
+  Evaluation: 'Evaluation',
+  OtpToken: 'OtpToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -177,6 +178,20 @@ export const EvaluationScalarFieldEnum = {
 } as const
 
 export type EvaluationScalarFieldEnum = (typeof EvaluationScalarFieldEnum)[keyof typeof EvaluationScalarFieldEnum]
+
+
+export const OtpTokenScalarFieldEnum = {
+  id: 'id',
+  phone: 'phone',
+  code: 'code',
+  type: 'type',
+  fullName: 'fullName',
+  expiresAt: 'expiresAt',
+  used: 'used',
+  createdAt: 'createdAt'
+} as const
+
+export type OtpTokenScalarFieldEnum = (typeof OtpTokenScalarFieldEnum)[keyof typeof OtpTokenScalarFieldEnum]
 
 
 export const SortOrder = {

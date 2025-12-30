@@ -90,6 +90,7 @@ export class AuthService {
     code: string,
   ): Promise<{ accessToken: string; user: object }> {
     // Find valid signup OTP token
+    console.log(`Verifying Signup OTP: phone=${phone}, code=${code}`);
     const otpToken = await this.prisma.otpToken.findFirst({
       where: {
         phone,
@@ -100,6 +101,20 @@ export class AuthService {
       },
       orderBy: { createdAt: 'desc' },
     });
+
+    // Debug log
+    if (!otpToken) {
+      console.log('OTP Verification Failed: Token not found or expired');
+      // Check if it exists but expired or used
+      const debugToken = await this.prisma.otpToken.findFirst({
+        where: { phone, code, type: 'signup' },
+        orderBy: { createdAt: 'desc' },
+      });
+      console.log('Debug Token State:', debugToken);
+      console.log('Current Server Time:', new Date());
+    } else {
+      console.log('OTP Verification Successful:', otpToken);
+    }
 
     if (!otpToken) {
       throw new UnauthorizedException('Invalid or expired OTP');
@@ -193,6 +208,7 @@ export class AuthService {
     code: string,
   ): Promise<{ accessToken: string; user: object }> {
     // Find valid signin OTP token
+    console.log(`Verifying Signin OTP: phone=${phone}, code=${code}`);
     const otpToken = await this.prisma.otpToken.findFirst({
       where: {
         phone,
@@ -203,6 +219,20 @@ export class AuthService {
       },
       orderBy: { createdAt: 'desc' },
     });
+
+    // Debug log
+    if (!otpToken) {
+      console.log('Signin OTP Verification Failed: Token not found or expired');
+      // Check if it exists but expired or used
+      const debugToken = await this.prisma.otpToken.findFirst({
+        where: { phone, code, type: 'signin' },
+        orderBy: { createdAt: 'desc' },
+      });
+      console.log('Debug Token State:', debugToken);
+      console.log('Current Server Time:', new Date());
+    } else {
+      console.log('Signin OTP Verification Successful:', otpToken);
+    }
 
     if (!otpToken) {
       throw new UnauthorizedException('Invalid or expired OTP');

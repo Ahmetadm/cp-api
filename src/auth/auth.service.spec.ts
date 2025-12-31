@@ -23,6 +23,12 @@ const mockPrismaService = {
   },
 };
 
+// Mock SmsService with Twilio Verify API methods
+const mockSmsService = {
+  sendVerification: jest.fn().mockResolvedValue({ status: 'pending', sid: 'test-sid' }),
+  checkVerification: jest.fn().mockResolvedValue({ status: 'approved', valid: true }),
+};
+
 // Mock the prisma module
 jest.mock('../prisma', () => ({
   PrismaService: jest.fn().mockImplementation(() => mockPrismaService),
@@ -31,9 +37,7 @@ jest.mock('../prisma', () => ({
 
 // Mock the SMS module
 jest.mock('../sms', () => ({
-  SmsService: jest.fn().mockImplementation(() => ({
-    sendOtp: jest.fn().mockResolvedValue(undefined),
-  })),
+  SmsService: jest.fn().mockImplementation(() => mockSmsService),
   SmsModule: {},
 }));
 
@@ -43,18 +47,11 @@ describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(async () => {
-    // Reset environment
-    process.env.MOCK_OTP_ENABLED = 'true';
-    process.env.OTP_EXPIRY_MINUTES = '5';
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
         { provide: PrismaService, useValue: mockPrismaService },
-        {
-          provide: SmsService,
-          useValue: { sendOtp: jest.fn().mockResolvedValue(undefined) },
-        },
+        { provide: SmsService, useValue: mockSmsService },
         { provide: JwtService, useValue: { sign: jest.fn().mockReturnValue('mock-jwt-token') } },
       ],
     }).compile();
@@ -63,13 +60,17 @@ describe('AuthService', () => {
 
     // Clear all mocks before each test
     jest.clearAllMocks();
+
+    // Reset default mock behaviors
+    mockSmsService.sendVerification.mockResolvedValue({ status: 'pending', sid: 'test-sid' });
+    mockSmsService.checkVerification.mockResolvedValue({ status: 'approved', valid: true });
   });
 
   describe('signup', () => {
     const phone = '+38970123456';
     const fullName = 'Test User';
 
-    it('should send OTP for new user', async () => {
+    it('should send verification for new user', async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
       mockPrismaService.otpToken.updateMany.mockResolvedValue({ count: 0 });
       mockPrismaService.otpToken.create.mockResolvedValue({ id: 1 });
@@ -78,10 +79,11 @@ describe('AuthService', () => {
 
       expect(result.message).toContain('OTP sent successfully');
       expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({ where: { phone } });
+      expect(mockSmsService.sendVerification).toHaveBeenCalledWith(phone);
       expect(mockPrismaService.otpToken.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
           phone,
-          code: '123456',
+          code: 'VERIFY_API',
           type: 'signup',
           fullName,
         }),
@@ -92,7 +94,7 @@ describe('AuthService', () => {
       mockPrismaService.user.findUnique.mockResolvedValue({ id: 1, phone });
 
       await expect(service.signup(phone, fullName)).rejects.toThrow(ConflictException);
-      expect(mockPrismaService.otpToken.create).not.toHaveBeenCalled();
+      expect(mockSmsService.sendVerification).not.toHaveBeenCalled();
     });
   });
 
@@ -101,15 +103,14 @@ describe('AuthService', () => {
     const code = '123456';
     const fullName = 'Test User';
 
-    it('should create user and return JWT on valid OTP', async () => {
+    it('should create user and return JWT on valid verification', async () => {
+      mockSmsService.checkVerification.mockResolvedValue({ status: 'approved', valid: true });
       mockPrismaService.otpToken.findFirst.mockResolvedValue({
         id: 1,
         phone,
-        code,
         type: 'signup',
         fullName,
         used: false,
-        expiresAt: new Date(Date.now() + 60000),
       });
       mockPrismaService.user.findUnique.mockResolvedValue(null);
       mockPrismaService.otpToken.update.mockResolvedValue({ id: 1, used: true });
@@ -122,6 +123,7 @@ describe('AuthService', () => {
 
       const result = await service.signupVerify(phone, code);
 
+      expect(mockSmsService.checkVerification).toHaveBeenCalledWith(phone, code);
       expect(result.accessToken).toBe('mock-jwt-token');
       expect(result.user).toMatchObject({
         id: 1,
@@ -131,21 +133,27 @@ describe('AuthService', () => {
       });
     });
 
-    it('should throw UnauthorizedException on invalid OTP', async () => {
+    it('should throw UnauthorizedException on invalid verification', async () => {
+      mockSmsService.checkVerification.mockResolvedValue({ status: 'pending', valid: false });
+
+      await expect(service.signupVerify(phone, code)).rejects.toThrow(UnauthorizedException);
+    });
+
+    it('should throw UnauthorizedException if signup intent not found', async () => {
+      mockSmsService.checkVerification.mockResolvedValue({ status: 'approved', valid: true });
       mockPrismaService.otpToken.findFirst.mockResolvedValue(null);
 
       await expect(service.signupVerify(phone, code)).rejects.toThrow(UnauthorizedException);
     });
 
     it('should throw ConflictException if user already exists', async () => {
+      mockSmsService.checkVerification.mockResolvedValue({ status: 'approved', valid: true });
       mockPrismaService.otpToken.findFirst.mockResolvedValue({
         id: 1,
         phone,
-        code,
         type: 'signup',
         fullName,
         used: false,
-        expiresAt: new Date(Date.now() + 60000),
       });
       mockPrismaService.user.findUnique.mockResolvedValue({ id: 1, phone });
 
@@ -156,28 +164,20 @@ describe('AuthService', () => {
   describe('signin', () => {
     const phone = '+38970123456';
 
-    it('should send OTP for existing user', async () => {
+    it('should send verification for existing user', async () => {
       mockPrismaService.user.findUnique.mockResolvedValue({ id: 1, phone });
-      mockPrismaService.otpToken.updateMany.mockResolvedValue({ count: 0 });
-      mockPrismaService.otpToken.create.mockResolvedValue({ id: 1 });
 
       const result = await service.signin(phone);
 
       expect(result.message).toBe('OTP sent successfully');
-      expect(mockPrismaService.otpToken.create).toHaveBeenCalledWith({
-        data: expect.objectContaining({
-          phone,
-          code: '123456',
-          type: 'signin',
-        }),
-      });
+      expect(mockSmsService.sendVerification).toHaveBeenCalledWith(phone);
     });
 
     it('should throw NotFoundException if user does not exist', async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
 
       await expect(service.signin(phone)).rejects.toThrow(NotFoundException);
-      expect(mockPrismaService.otpToken.create).not.toHaveBeenCalled();
+      expect(mockSmsService.sendVerification).not.toHaveBeenCalled();
     });
   });
 
@@ -185,25 +185,18 @@ describe('AuthService', () => {
     const phone = '+38970123456';
     const code = '123456';
 
-    it('should return JWT for valid OTP and existing user', async () => {
-      mockPrismaService.otpToken.findFirst.mockResolvedValue({
-        id: 1,
-        phone,
-        code,
-        type: 'signin',
-        used: false,
-        expiresAt: new Date(Date.now() + 60000),
-      });
+    it('should return JWT for valid verification and existing user', async () => {
+      mockSmsService.checkVerification.mockResolvedValue({ status: 'approved', valid: true });
       mockPrismaService.user.findUnique.mockResolvedValue({
         id: 1,
         phone,
         fullName: 'Test User',
         isVerified: true,
       });
-      mockPrismaService.otpToken.update.mockResolvedValue({ id: 1, used: true });
 
       const result = await service.signinVerify(phone, code);
 
+      expect(mockSmsService.checkVerification).toHaveBeenCalledWith(phone, code);
       expect(result.accessToken).toBe('mock-jwt-token');
       expect(result.user).toMatchObject({
         id: 1,
@@ -213,21 +206,14 @@ describe('AuthService', () => {
       });
     });
 
-    it('should throw UnauthorizedException on invalid OTP', async () => {
-      mockPrismaService.otpToken.findFirst.mockResolvedValue(null);
+    it('should throw UnauthorizedException on invalid verification', async () => {
+      mockSmsService.checkVerification.mockResolvedValue({ status: 'pending', valid: false });
 
       await expect(service.signinVerify(phone, code)).rejects.toThrow(UnauthorizedException);
     });
 
     it('should throw NotFoundException if user not found', async () => {
-      mockPrismaService.otpToken.findFirst.mockResolvedValue({
-        id: 1,
-        phone,
-        code,
-        type: 'signin',
-        used: false,
-        expiresAt: new Date(Date.now() + 60000),
-      });
+      mockSmsService.checkVerification.mockResolvedValue({ status: 'approved', valid: true });
       mockPrismaService.user.findUnique.mockResolvedValue(null);
 
       await expect(service.signinVerify(phone, code)).rejects.toThrow(NotFoundException);

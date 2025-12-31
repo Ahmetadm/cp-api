@@ -12,29 +12,19 @@ import { SmsService } from '../sms';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
-  private readonly otpExpiryMinutes: number;
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly smsService: SmsService,
     private readonly jwtService: JwtService,
-  ) {
-    this.otpExpiryMinutes = parseInt(process.env.OTP_EXPIRY_MINUTES || '5', 10);
-  }
+  ) {}
 
   /**
-   * Generate a random 6-digit OTP code
+   * Mark all previous pending signups for a phone as cancelled
    */
-  private generateOtpCode(): string {
-    return Math.floor(100000 + Math.random() * 900000).toString();
-  }
-
-  /**
-   * Mark all previous unused OTPs for a phone as used
-   */
-  private async invalidatePreviousOtps(phone: string): Promise<void> {
+  private async invalidatePreviousPendingSignups(phone: string): Promise<void> {
     await this.prisma.otpToken.updateMany({
-      where: { phone, used: false },
+      where: { phone, used: false, type: 'signup' },
       data: { used: true },
     });
   }
@@ -57,27 +47,24 @@ export class AuthService {
       );
     }
 
-    const code = this.generateOtpCode();
-    const expiresAt = new Date(Date.now() + this.otpExpiryMinutes * 60 * 1000);
+    // Invalidate previous pending signups
+    await this.invalidatePreviousPendingSignups(phone);
 
-    // Invalidate previous OTPs
-    await this.invalidatePreviousOtps(phone);
-
-    // Create signup OTP token with fullName
+    // Store signup intent with fullName (we need this after verification)
     await this.prisma.otpToken.create({
       data: {
         phone,
-        code,
+        code: 'VERIFY_API', // Placeholder - Twilio handles the actual code
         type: 'signup',
         fullName,
-        expiresAt,
+        expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
       },
     });
 
-    // Send OTP via SMS
-    await this.smsService.sendOtp(phone, code);
+    // Send verification via Twilio Verify API
+    await this.smsService.sendVerification(phone);
 
-    this.logger.log(`Signup OTP sent to ${phone}`);
+    this.logger.log(`Signup verification sent to ${phone}`);
 
     return { message: 'OTP sent successfully. Please verify to complete registration.' };
   }
@@ -89,35 +76,25 @@ export class AuthService {
     phone: string,
     code: string,
   ): Promise<{ accessToken: string; user: object }> {
-    // Find valid signup OTP token
-    console.log(`Verifying Signup OTP: phone=${phone}, code=${code}`);
-    const otpToken = await this.prisma.otpToken.findFirst({
+    // Check verification with Twilio Verify API
+    const verificationResult = await this.smsService.checkVerification(phone, code);
+
+    if (verificationResult.status !== 'approved' || !verificationResult.valid) {
+      throw new UnauthorizedException('Invalid or expired OTP');
+    }
+
+    // Find the signup intent to get fullName
+    const signupIntent = await this.prisma.otpToken.findFirst({
       where: {
         phone,
-        code,
         type: 'signup',
         used: false,
-        expiresAt: { gt: new Date() },
       },
       orderBy: { createdAt: 'desc' },
     });
 
-    // Debug log
-    if (!otpToken) {
-      console.log('OTP Verification Failed: Token not found or expired');
-      // Check if it exists but expired or used
-      const debugToken = await this.prisma.otpToken.findFirst({
-        where: { phone, code, type: 'signup' },
-        orderBy: { createdAt: 'desc' },
-      });
-      console.log('Debug Token State:', debugToken);
-      console.log('Current Server Time:', new Date());
-    } else {
-      console.log('OTP Verification Successful:', otpToken);
-    }
-
-    if (!otpToken) {
-      throw new UnauthorizedException('Invalid or expired OTP');
+    if (!signupIntent) {
+      throw new UnauthorizedException('Signup session expired. Please sign up again.');
     }
 
     // Check user doesn't already exist (race condition protection)
@@ -129,22 +106,22 @@ export class AuthService {
       throw new ConflictException('Account already exists. Please sign in.');
     }
 
-    // Mark OTP as used
+    // Mark signup intent as used
     await this.prisma.otpToken.update({
-      where: { id: otpToken.id },
+      where: { id: signupIntent.id },
       data: { used: true },
     });
 
-    // Create new user with fullName from OTP token
+    // Create new user with fullName from signup intent
     const user = await this.prisma.user.create({
       data: {
         phone,
-        fullName: otpToken.fullName,
+        fullName: signupIntent.fullName,
         isVerified: true,
       },
     });
 
-    this.logger.log(`New user created: ${phone} (${otpToken.fullName})`);
+    this.logger.log(`New user created: ${phone} (${signupIntent.fullName})`);
 
     // Generate JWT token
     const payload = { sub: user.id, phone: user.phone, type: 'user' };
@@ -176,26 +153,10 @@ export class AuthService {
       );
     }
 
-    const code = this.generateOtpCode();
-    const expiresAt = new Date(Date.now() + this.otpExpiryMinutes * 60 * 1000);
+    // Send verification via Twilio Verify API
+    await this.smsService.sendVerification(phone);
 
-    // Invalidate previous OTPs
-    await this.invalidatePreviousOtps(phone);
-
-    // Create signin OTP token
-    await this.prisma.otpToken.create({
-      data: {
-        phone,
-        code,
-        type: 'signin',
-        expiresAt,
-      },
-    });
-
-    // Send OTP via SMS
-    await this.smsService.sendOtp(phone, code);
-
-    this.logger.log(`Signin OTP sent to ${phone}`);
+    this.logger.log(`Signin verification sent to ${phone}`);
 
     return { message: 'OTP sent successfully' };
   }
@@ -207,34 +168,10 @@ export class AuthService {
     phone: string,
     code: string,
   ): Promise<{ accessToken: string; user: object }> {
-    // Find valid signin OTP token
-    console.log(`Verifying Signin OTP: phone=${phone}, code=${code}`);
-    const otpToken = await this.prisma.otpToken.findFirst({
-      where: {
-        phone,
-        code,
-        type: 'signin',
-        used: false,
-        expiresAt: { gt: new Date() },
-      },
-      orderBy: { createdAt: 'desc' },
-    });
+    // Check verification with Twilio Verify API
+    const verificationResult = await this.smsService.checkVerification(phone, code);
 
-    // Debug log
-    if (!otpToken) {
-      console.log('Signin OTP Verification Failed: Token not found or expired');
-      // Check if it exists but expired or used
-      const debugToken = await this.prisma.otpToken.findFirst({
-        where: { phone, code, type: 'signin' },
-        orderBy: { createdAt: 'desc' },
-      });
-      console.log('Debug Token State:', debugToken);
-      console.log('Current Server Time:', new Date());
-    } else {
-      console.log('Signin OTP Verification Successful:', otpToken);
-    }
-
-    if (!otpToken) {
+    if (verificationResult.status !== 'approved' || !verificationResult.valid) {
       throw new UnauthorizedException('Invalid or expired OTP');
     }
 
@@ -246,12 +183,6 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-
-    // Mark OTP as used
-    await this.prisma.otpToken.update({
-      where: { id: otpToken.id },
-      data: { used: true },
-    });
 
     // Update isVerified if not already
     if (!user.isVerified) {

@@ -30,21 +30,18 @@ export type ComplaintAvgAggregateOutputType = {
   id: number | null
   userId: number | null
   companyId: number | null
-  categoryId: number | null
 }
 
 export type ComplaintSumAggregateOutputType = {
   id: number | null
   userId: number | null
   companyId: number | null
-  categoryId: number | null
 }
 
 export type ComplaintMinAggregateOutputType = {
   id: number | null
   userId: number | null
   companyId: number | null
-  categoryId: number | null
   title: string | null
   description: string | null
   detectedLang: string | null
@@ -59,7 +56,6 @@ export type ComplaintMaxAggregateOutputType = {
   id: number | null
   userId: number | null
   companyId: number | null
-  categoryId: number | null
   title: string | null
   description: string | null
   detectedLang: string | null
@@ -74,7 +70,6 @@ export type ComplaintCountAggregateOutputType = {
   id: number
   userId: number
   companyId: number
-  categoryId: number
   title: number
   description: number
   detectedLang: number
@@ -91,21 +86,18 @@ export type ComplaintAvgAggregateInputType = {
   id?: true
   userId?: true
   companyId?: true
-  categoryId?: true
 }
 
 export type ComplaintSumAggregateInputType = {
   id?: true
   userId?: true
   companyId?: true
-  categoryId?: true
 }
 
 export type ComplaintMinAggregateInputType = {
   id?: true
   userId?: true
   companyId?: true
-  categoryId?: true
   title?: true
   description?: true
   detectedLang?: true
@@ -120,7 +112,6 @@ export type ComplaintMaxAggregateInputType = {
   id?: true
   userId?: true
   companyId?: true
-  categoryId?: true
   title?: true
   description?: true
   detectedLang?: true
@@ -135,7 +126,6 @@ export type ComplaintCountAggregateInputType = {
   id?: true
   userId?: true
   companyId?: true
-  categoryId?: true
   title?: true
   description?: true
   detectedLang?: true
@@ -237,7 +227,6 @@ export type ComplaintGroupByOutputType = {
   id: number
   userId: number
   companyId: number
-  categoryId: number
   title: string
   description: string
   detectedLang: string | null
@@ -275,7 +264,6 @@ export type ComplaintWhereInput = {
   id?: Prisma.IntFilter<"Complaint"> | number
   userId?: Prisma.IntFilter<"Complaint"> | number
   companyId?: Prisma.IntFilter<"Complaint"> | number
-  categoryId?: Prisma.IntFilter<"Complaint"> | number
   title?: Prisma.StringFilter<"Complaint"> | string
   description?: Prisma.StringFilter<"Complaint"> | string
   detectedLang?: Prisma.StringNullableFilter<"Complaint"> | string | null
@@ -286,7 +274,6 @@ export type ComplaintWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
-  category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   interactions?: Prisma.InteractionListRelationFilter
   evaluation?: Prisma.XOR<Prisma.EvaluationNullableScalarRelationFilter, Prisma.EvaluationWhereInput> | null
 }
@@ -295,7 +282,6 @@ export type ComplaintOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   detectedLang?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -306,7 +292,6 @@ export type ComplaintOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   company?: Prisma.CompanyOrderByWithRelationInput
-  category?: Prisma.CategoryOrderByWithRelationInput
   interactions?: Prisma.InteractionOrderByRelationAggregateInput
   evaluation?: Prisma.EvaluationOrderByWithRelationInput
 }
@@ -318,7 +303,6 @@ export type ComplaintWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ComplaintWhereInput | Prisma.ComplaintWhereInput[]
   userId?: Prisma.IntFilter<"Complaint"> | number
   companyId?: Prisma.IntFilter<"Complaint"> | number
-  categoryId?: Prisma.IntFilter<"Complaint"> | number
   title?: Prisma.StringFilter<"Complaint"> | string
   description?: Prisma.StringFilter<"Complaint"> | string
   detectedLang?: Prisma.StringNullableFilter<"Complaint"> | string | null
@@ -329,7 +313,6 @@ export type ComplaintWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
-  category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   interactions?: Prisma.InteractionListRelationFilter
   evaluation?: Prisma.XOR<Prisma.EvaluationNullableScalarRelationFilter, Prisma.EvaluationWhereInput> | null
 }, "id">
@@ -338,7 +321,6 @@ export type ComplaintOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   detectedLang?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -361,7 +343,6 @@ export type ComplaintScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"Complaint"> | number
   userId?: Prisma.IntWithAggregatesFilter<"Complaint"> | number
   companyId?: Prisma.IntWithAggregatesFilter<"Complaint"> | number
-  categoryId?: Prisma.IntWithAggregatesFilter<"Complaint"> | number
   title?: Prisma.StringWithAggregatesFilter<"Complaint"> | string
   description?: Prisma.StringWithAggregatesFilter<"Complaint"> | string
   detectedLang?: Prisma.StringNullableWithAggregatesFilter<"Complaint"> | string | null
@@ -383,7 +364,6 @@ export type ComplaintCreateInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutComplaintsInput
   company: Prisma.CompanyCreateNestedOneWithoutComplaintsInput
-  category: Prisma.CategoryCreateNestedOneWithoutComplaintsInput
   interactions?: Prisma.InteractionCreateNestedManyWithoutComplaintInput
   evaluation?: Prisma.EvaluationCreateNestedOneWithoutComplaintInput
 }
@@ -392,7 +372,6 @@ export type ComplaintUncheckedCreateInput = {
   id?: number
   userId: number
   companyId: number
-  categoryId: number
   title: string
   description: string
   detectedLang?: string | null
@@ -416,7 +395,6 @@ export type ComplaintUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutComplaintsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutComplaintsNestedInput
-  category?: Prisma.CategoryUpdateOneRequiredWithoutComplaintsNestedInput
   interactions?: Prisma.InteractionUpdateManyWithoutComplaintNestedInput
   evaluation?: Prisma.EvaluationUpdateOneWithoutComplaintNestedInput
 }
@@ -425,7 +403,6 @@ export type ComplaintUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   companyId?: Prisma.IntFieldUpdateOperationsInput | number
-  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   detectedLang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -442,7 +419,6 @@ export type ComplaintCreateManyInput = {
   id?: number
   userId: number
   companyId: number
-  categoryId: number
   title: string
   description: string
   detectedLang?: string | null
@@ -468,7 +444,6 @@ export type ComplaintUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   companyId?: Prisma.IntFieldUpdateOperationsInput | number
-  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   detectedLang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -493,7 +468,6 @@ export type ComplaintCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   detectedLang?: Prisma.SortOrder
@@ -508,14 +482,12 @@ export type ComplaintAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
 }
 
 export type ComplaintMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   detectedLang?: Prisma.SortOrder
@@ -530,7 +502,6 @@ export type ComplaintMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   detectedLang?: Prisma.SortOrder
@@ -545,54 +516,11 @@ export type ComplaintSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
 }
 
 export type ComplaintScalarRelationFilter = {
   is?: Prisma.ComplaintWhereInput
   isNot?: Prisma.ComplaintWhereInput
-}
-
-export type ComplaintCreateNestedManyWithoutCategoryInput = {
-  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutCategoryInput, Prisma.ComplaintUncheckedCreateWithoutCategoryInput> | Prisma.ComplaintCreateWithoutCategoryInput[] | Prisma.ComplaintUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutCategoryInput | Prisma.ComplaintCreateOrConnectWithoutCategoryInput[]
-  createMany?: Prisma.ComplaintCreateManyCategoryInputEnvelope
-  connect?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
-}
-
-export type ComplaintUncheckedCreateNestedManyWithoutCategoryInput = {
-  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutCategoryInput, Prisma.ComplaintUncheckedCreateWithoutCategoryInput> | Prisma.ComplaintCreateWithoutCategoryInput[] | Prisma.ComplaintUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutCategoryInput | Prisma.ComplaintCreateOrConnectWithoutCategoryInput[]
-  createMany?: Prisma.ComplaintCreateManyCategoryInputEnvelope
-  connect?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
-}
-
-export type ComplaintUpdateManyWithoutCategoryNestedInput = {
-  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutCategoryInput, Prisma.ComplaintUncheckedCreateWithoutCategoryInput> | Prisma.ComplaintCreateWithoutCategoryInput[] | Prisma.ComplaintUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutCategoryInput | Prisma.ComplaintCreateOrConnectWithoutCategoryInput[]
-  upsert?: Prisma.ComplaintUpsertWithWhereUniqueWithoutCategoryInput | Prisma.ComplaintUpsertWithWhereUniqueWithoutCategoryInput[]
-  createMany?: Prisma.ComplaintCreateManyCategoryInputEnvelope
-  set?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
-  disconnect?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
-  delete?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
-  connect?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
-  update?: Prisma.ComplaintUpdateWithWhereUniqueWithoutCategoryInput | Prisma.ComplaintUpdateWithWhereUniqueWithoutCategoryInput[]
-  updateMany?: Prisma.ComplaintUpdateManyWithWhereWithoutCategoryInput | Prisma.ComplaintUpdateManyWithWhereWithoutCategoryInput[]
-  deleteMany?: Prisma.ComplaintScalarWhereInput | Prisma.ComplaintScalarWhereInput[]
-}
-
-export type ComplaintUncheckedUpdateManyWithoutCategoryNestedInput = {
-  create?: Prisma.XOR<Prisma.ComplaintCreateWithoutCategoryInput, Prisma.ComplaintUncheckedCreateWithoutCategoryInput> | Prisma.ComplaintCreateWithoutCategoryInput[] | Prisma.ComplaintUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ComplaintCreateOrConnectWithoutCategoryInput | Prisma.ComplaintCreateOrConnectWithoutCategoryInput[]
-  upsert?: Prisma.ComplaintUpsertWithWhereUniqueWithoutCategoryInput | Prisma.ComplaintUpsertWithWhereUniqueWithoutCategoryInput[]
-  createMany?: Prisma.ComplaintCreateManyCategoryInputEnvelope
-  set?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
-  disconnect?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
-  delete?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
-  connect?: Prisma.ComplaintWhereUniqueInput | Prisma.ComplaintWhereUniqueInput[]
-  update?: Prisma.ComplaintUpdateWithWhereUniqueWithoutCategoryInput | Prisma.ComplaintUpdateWithWhereUniqueWithoutCategoryInput[]
-  updateMany?: Prisma.ComplaintUpdateManyWithWhereWithoutCategoryInput | Prisma.ComplaintUpdateManyWithWhereWithoutCategoryInput[]
-  deleteMany?: Prisma.ComplaintScalarWhereInput | Prisma.ComplaintScalarWhereInput[]
 }
 
 export type ComplaintCreateNestedManyWithoutUserInput = {
@@ -711,81 +639,6 @@ export type ComplaintUpdateOneRequiredWithoutEvaluationNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ComplaintUpdateToOneWithWhereWithoutEvaluationInput, Prisma.ComplaintUpdateWithoutEvaluationInput>, Prisma.ComplaintUncheckedUpdateWithoutEvaluationInput>
 }
 
-export type ComplaintCreateWithoutCategoryInput = {
-  title: string
-  description: string
-  detectedLang?: string | null
-  orderId?: string | null
-  privatePhone?: string | null
-  status?: $Enums.ComplaintStatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutComplaintsInput
-  company: Prisma.CompanyCreateNestedOneWithoutComplaintsInput
-  interactions?: Prisma.InteractionCreateNestedManyWithoutComplaintInput
-  evaluation?: Prisma.EvaluationCreateNestedOneWithoutComplaintInput
-}
-
-export type ComplaintUncheckedCreateWithoutCategoryInput = {
-  id?: number
-  userId: number
-  companyId: number
-  title: string
-  description: string
-  detectedLang?: string | null
-  orderId?: string | null
-  privatePhone?: string | null
-  status?: $Enums.ComplaintStatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  interactions?: Prisma.InteractionUncheckedCreateNestedManyWithoutComplaintInput
-  evaluation?: Prisma.EvaluationUncheckedCreateNestedOneWithoutComplaintInput
-}
-
-export type ComplaintCreateOrConnectWithoutCategoryInput = {
-  where: Prisma.ComplaintWhereUniqueInput
-  create: Prisma.XOR<Prisma.ComplaintCreateWithoutCategoryInput, Prisma.ComplaintUncheckedCreateWithoutCategoryInput>
-}
-
-export type ComplaintCreateManyCategoryInputEnvelope = {
-  data: Prisma.ComplaintCreateManyCategoryInput | Prisma.ComplaintCreateManyCategoryInput[]
-  skipDuplicates?: boolean
-}
-
-export type ComplaintUpsertWithWhereUniqueWithoutCategoryInput = {
-  where: Prisma.ComplaintWhereUniqueInput
-  update: Prisma.XOR<Prisma.ComplaintUpdateWithoutCategoryInput, Prisma.ComplaintUncheckedUpdateWithoutCategoryInput>
-  create: Prisma.XOR<Prisma.ComplaintCreateWithoutCategoryInput, Prisma.ComplaintUncheckedCreateWithoutCategoryInput>
-}
-
-export type ComplaintUpdateWithWhereUniqueWithoutCategoryInput = {
-  where: Prisma.ComplaintWhereUniqueInput
-  data: Prisma.XOR<Prisma.ComplaintUpdateWithoutCategoryInput, Prisma.ComplaintUncheckedUpdateWithoutCategoryInput>
-}
-
-export type ComplaintUpdateManyWithWhereWithoutCategoryInput = {
-  where: Prisma.ComplaintScalarWhereInput
-  data: Prisma.XOR<Prisma.ComplaintUpdateManyMutationInput, Prisma.ComplaintUncheckedUpdateManyWithoutCategoryInput>
-}
-
-export type ComplaintScalarWhereInput = {
-  AND?: Prisma.ComplaintScalarWhereInput | Prisma.ComplaintScalarWhereInput[]
-  OR?: Prisma.ComplaintScalarWhereInput[]
-  NOT?: Prisma.ComplaintScalarWhereInput | Prisma.ComplaintScalarWhereInput[]
-  id?: Prisma.IntFilter<"Complaint"> | number
-  userId?: Prisma.IntFilter<"Complaint"> | number
-  companyId?: Prisma.IntFilter<"Complaint"> | number
-  categoryId?: Prisma.IntFilter<"Complaint"> | number
-  title?: Prisma.StringFilter<"Complaint"> | string
-  description?: Prisma.StringFilter<"Complaint"> | string
-  detectedLang?: Prisma.StringNullableFilter<"Complaint"> | string | null
-  orderId?: Prisma.StringNullableFilter<"Complaint"> | string | null
-  privatePhone?: Prisma.StringNullableFilter<"Complaint"> | string | null
-  status?: Prisma.EnumComplaintStatusFilter<"Complaint"> | $Enums.ComplaintStatus
-  createdAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
-}
-
 export type ComplaintCreateWithoutUserInput = {
   title: string
   description: string
@@ -796,7 +649,6 @@ export type ComplaintCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutComplaintsInput
-  category: Prisma.CategoryCreateNestedOneWithoutComplaintsInput
   interactions?: Prisma.InteractionCreateNestedManyWithoutComplaintInput
   evaluation?: Prisma.EvaluationCreateNestedOneWithoutComplaintInput
 }
@@ -804,7 +656,6 @@ export type ComplaintCreateWithoutUserInput = {
 export type ComplaintUncheckedCreateWithoutUserInput = {
   id?: number
   companyId: number
-  categoryId: number
   title: string
   description: string
   detectedLang?: string | null
@@ -843,6 +694,23 @@ export type ComplaintUpdateManyWithWhereWithoutUserInput = {
   data: Prisma.XOR<Prisma.ComplaintUpdateManyMutationInput, Prisma.ComplaintUncheckedUpdateManyWithoutUserInput>
 }
 
+export type ComplaintScalarWhereInput = {
+  AND?: Prisma.ComplaintScalarWhereInput | Prisma.ComplaintScalarWhereInput[]
+  OR?: Prisma.ComplaintScalarWhereInput[]
+  NOT?: Prisma.ComplaintScalarWhereInput | Prisma.ComplaintScalarWhereInput[]
+  id?: Prisma.IntFilter<"Complaint"> | number
+  userId?: Prisma.IntFilter<"Complaint"> | number
+  companyId?: Prisma.IntFilter<"Complaint"> | number
+  title?: Prisma.StringFilter<"Complaint"> | string
+  description?: Prisma.StringFilter<"Complaint"> | string
+  detectedLang?: Prisma.StringNullableFilter<"Complaint"> | string | null
+  orderId?: Prisma.StringNullableFilter<"Complaint"> | string | null
+  privatePhone?: Prisma.StringNullableFilter<"Complaint"> | string | null
+  status?: Prisma.EnumComplaintStatusFilter<"Complaint"> | $Enums.ComplaintStatus
+  createdAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Complaint"> | Date | string
+}
+
 export type ComplaintCreateWithoutCompanyInput = {
   title: string
   description: string
@@ -853,7 +721,6 @@ export type ComplaintCreateWithoutCompanyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutComplaintsInput
-  category: Prisma.CategoryCreateNestedOneWithoutComplaintsInput
   interactions?: Prisma.InteractionCreateNestedManyWithoutComplaintInput
   evaluation?: Prisma.EvaluationCreateNestedOneWithoutComplaintInput
 }
@@ -861,7 +728,6 @@ export type ComplaintCreateWithoutCompanyInput = {
 export type ComplaintUncheckedCreateWithoutCompanyInput = {
   id?: number
   userId: number
-  categoryId: number
   title: string
   description: string
   detectedLang?: string | null
@@ -911,7 +777,6 @@ export type ComplaintCreateWithoutInteractionsInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutComplaintsInput
   company: Prisma.CompanyCreateNestedOneWithoutComplaintsInput
-  category: Prisma.CategoryCreateNestedOneWithoutComplaintsInput
   evaluation?: Prisma.EvaluationCreateNestedOneWithoutComplaintInput
 }
 
@@ -919,7 +784,6 @@ export type ComplaintUncheckedCreateWithoutInteractionsInput = {
   id?: number
   userId: number
   companyId: number
-  categoryId: number
   title: string
   description: string
   detectedLang?: string | null
@@ -958,7 +822,6 @@ export type ComplaintUpdateWithoutInteractionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutComplaintsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutComplaintsNestedInput
-  category?: Prisma.CategoryUpdateOneRequiredWithoutComplaintsNestedInput
   evaluation?: Prisma.EvaluationUpdateOneWithoutComplaintNestedInput
 }
 
@@ -966,7 +829,6 @@ export type ComplaintUncheckedUpdateWithoutInteractionsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   companyId?: Prisma.IntFieldUpdateOperationsInput | number
-  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   detectedLang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -989,7 +851,6 @@ export type ComplaintCreateWithoutEvaluationInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutComplaintsInput
   company: Prisma.CompanyCreateNestedOneWithoutComplaintsInput
-  category: Prisma.CategoryCreateNestedOneWithoutComplaintsInput
   interactions?: Prisma.InteractionCreateNestedManyWithoutComplaintInput
 }
 
@@ -997,7 +858,6 @@ export type ComplaintUncheckedCreateWithoutEvaluationInput = {
   id?: number
   userId: number
   companyId: number
-  categoryId: number
   title: string
   description: string
   detectedLang?: string | null
@@ -1036,7 +896,6 @@ export type ComplaintUpdateWithoutEvaluationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutComplaintsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutComplaintsNestedInput
-  category?: Prisma.CategoryUpdateOneRequiredWithoutComplaintsNestedInput
   interactions?: Prisma.InteractionUpdateManyWithoutComplaintNestedInput
 }
 
@@ -1044,7 +903,6 @@ export type ComplaintUncheckedUpdateWithoutEvaluationInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   companyId?: Prisma.IntFieldUpdateOperationsInput | number
-  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   detectedLang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1054,71 +912,11 @@ export type ComplaintUncheckedUpdateWithoutEvaluationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   interactions?: Prisma.InteractionUncheckedUpdateManyWithoutComplaintNestedInput
-}
-
-export type ComplaintCreateManyCategoryInput = {
-  id?: number
-  userId: number
-  companyId: number
-  title: string
-  description: string
-  detectedLang?: string | null
-  orderId?: string | null
-  privatePhone?: string | null
-  status?: $Enums.ComplaintStatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type ComplaintUpdateWithoutCategoryInput = {
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  detectedLang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  privatePhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumComplaintStatusFieldUpdateOperationsInput | $Enums.ComplaintStatus
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutComplaintsNestedInput
-  company?: Prisma.CompanyUpdateOneRequiredWithoutComplaintsNestedInput
-  interactions?: Prisma.InteractionUpdateManyWithoutComplaintNestedInput
-  evaluation?: Prisma.EvaluationUpdateOneWithoutComplaintNestedInput
-}
-
-export type ComplaintUncheckedUpdateWithoutCategoryInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  userId?: Prisma.IntFieldUpdateOperationsInput | number
-  companyId?: Prisma.IntFieldUpdateOperationsInput | number
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  detectedLang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  privatePhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumComplaintStatusFieldUpdateOperationsInput | $Enums.ComplaintStatus
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  interactions?: Prisma.InteractionUncheckedUpdateManyWithoutComplaintNestedInput
-  evaluation?: Prisma.EvaluationUncheckedUpdateOneWithoutComplaintNestedInput
-}
-
-export type ComplaintUncheckedUpdateManyWithoutCategoryInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  userId?: Prisma.IntFieldUpdateOperationsInput | number
-  companyId?: Prisma.IntFieldUpdateOperationsInput | number
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  detectedLang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  privatePhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumComplaintStatusFieldUpdateOperationsInput | $Enums.ComplaintStatus
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ComplaintCreateManyUserInput = {
   id?: number
   companyId: number
-  categoryId: number
   title: string
   description: string
   detectedLang?: string | null
@@ -1139,7 +937,6 @@ export type ComplaintUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutComplaintsNestedInput
-  category?: Prisma.CategoryUpdateOneRequiredWithoutComplaintsNestedInput
   interactions?: Prisma.InteractionUpdateManyWithoutComplaintNestedInput
   evaluation?: Prisma.EvaluationUpdateOneWithoutComplaintNestedInput
 }
@@ -1147,7 +944,6 @@ export type ComplaintUpdateWithoutUserInput = {
 export type ComplaintUncheckedUpdateWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   companyId?: Prisma.IntFieldUpdateOperationsInput | number
-  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   detectedLang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1163,7 +959,6 @@ export type ComplaintUncheckedUpdateWithoutUserInput = {
 export type ComplaintUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   companyId?: Prisma.IntFieldUpdateOperationsInput | number
-  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   detectedLang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1177,7 +972,6 @@ export type ComplaintUncheckedUpdateManyWithoutUserInput = {
 export type ComplaintCreateManyCompanyInput = {
   id?: number
   userId: number
-  categoryId: number
   title: string
   description: string
   detectedLang?: string | null
@@ -1198,7 +992,6 @@ export type ComplaintUpdateWithoutCompanyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutComplaintsNestedInput
-  category?: Prisma.CategoryUpdateOneRequiredWithoutComplaintsNestedInput
   interactions?: Prisma.InteractionUpdateManyWithoutComplaintNestedInput
   evaluation?: Prisma.EvaluationUpdateOneWithoutComplaintNestedInput
 }
@@ -1206,7 +999,6 @@ export type ComplaintUpdateWithoutCompanyInput = {
 export type ComplaintUncheckedUpdateWithoutCompanyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   detectedLang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1222,7 +1014,6 @@ export type ComplaintUncheckedUpdateWithoutCompanyInput = {
 export type ComplaintUncheckedUpdateManyWithoutCompanyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   detectedLang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1268,7 +1059,6 @@ export type ComplaintSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   id?: boolean
   userId?: boolean
   companyId?: boolean
-  categoryId?: boolean
   title?: boolean
   description?: boolean
   detectedLang?: boolean
@@ -1279,7 +1069,6 @@ export type ComplaintSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   interactions?: boolean | Prisma.Complaint$interactionsArgs<ExtArgs>
   evaluation?: boolean | Prisma.Complaint$evaluationArgs<ExtArgs>
   _count?: boolean | Prisma.ComplaintCountOutputTypeDefaultArgs<ExtArgs>
@@ -1289,7 +1078,6 @@ export type ComplaintSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   id?: boolean
   userId?: boolean
   companyId?: boolean
-  categoryId?: boolean
   title?: boolean
   description?: boolean
   detectedLang?: boolean
@@ -1300,14 +1088,12 @@ export type ComplaintSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["complaint"]>
 
 export type ComplaintSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   companyId?: boolean
-  categoryId?: boolean
   title?: boolean
   description?: boolean
   detectedLang?: boolean
@@ -1318,14 +1104,12 @@ export type ComplaintSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["complaint"]>
 
 export type ComplaintSelectScalar = {
   id?: boolean
   userId?: boolean
   companyId?: boolean
-  categoryId?: boolean
   title?: boolean
   description?: boolean
   detectedLang?: boolean
@@ -1336,11 +1120,10 @@ export type ComplaintSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ComplaintOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "companyId" | "categoryId" | "title" | "description" | "detectedLang" | "orderId" | "privatePhone" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["complaint"]>
+export type ComplaintOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "companyId" | "title" | "description" | "detectedLang" | "orderId" | "privatePhone" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["complaint"]>
 export type ComplaintInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   interactions?: boolean | Prisma.Complaint$interactionsArgs<ExtArgs>
   evaluation?: boolean | Prisma.Complaint$evaluationArgs<ExtArgs>
   _count?: boolean | Prisma.ComplaintCountOutputTypeDefaultArgs<ExtArgs>
@@ -1348,12 +1131,10 @@ export type ComplaintInclude<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type ComplaintIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }
 export type ComplaintIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }
 
 export type $ComplaintPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1361,7 +1142,6 @@ export type $ComplaintPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     company: Prisma.$CompanyPayload<ExtArgs>
-    category: Prisma.$CategoryPayload<ExtArgs>
     interactions: Prisma.$InteractionPayload<ExtArgs>[]
     evaluation: Prisma.$EvaluationPayload<ExtArgs> | null
   }
@@ -1369,7 +1149,6 @@ export type $ComplaintPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     id: number
     userId: number
     companyId: number
-    categoryId: number
     title: string
     description: string
     detectedLang: string | null
@@ -1774,7 +1553,6 @@ export interface Prisma__ComplaintClient<T, Null = never, ExtArgs extends runtim
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  category<T extends Prisma.CategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   interactions<T extends Prisma.Complaint$interactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Complaint$interactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InteractionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   evaluation<T extends Prisma.Complaint$evaluationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Complaint$evaluationArgs<ExtArgs>>): Prisma.Prisma__EvaluationClient<runtime.Types.Result.GetResult<Prisma.$EvaluationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1809,7 +1587,6 @@ export interface ComplaintFieldRefs {
   readonly id: Prisma.FieldRef<"Complaint", 'Int'>
   readonly userId: Prisma.FieldRef<"Complaint", 'Int'>
   readonly companyId: Prisma.FieldRef<"Complaint", 'Int'>
-  readonly categoryId: Prisma.FieldRef<"Complaint", 'Int'>
   readonly title: Prisma.FieldRef<"Complaint", 'String'>
   readonly description: Prisma.FieldRef<"Complaint", 'String'>
   readonly detectedLang: Prisma.FieldRef<"Complaint", 'String'>

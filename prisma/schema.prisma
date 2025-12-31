@@ -12,12 +12,13 @@ datasource db {
 }
 
 model Category {
-  id         Int         @id @default(autoincrement())
-  slug       String      @unique
-  labelMk    String      @map("label_mk")
-  labelSq    String      @map("label_sq")
-  createdAt  DateTime    @default(now()) @map("created_at")
-  complaints Complaint[]
+  id         Int               @id @default(autoincrement())
+  slug       String            @unique
+  labelEn    String            @map("label_en")
+  labelMk    String            @map("label_mk")
+  labelSq    String            @map("label_sq")
+  createdAt  DateTime          @default(now()) @map("created_at")
+  companies  CompanyCategory[]
 
   @@map("categories")
 }
@@ -43,19 +44,32 @@ model User {
 }
 
 model Company {
-  id               Int           @id @default(autoincrement())
+  id               Int               @id @default(autoincrement())
   name             String
-  slug             String        @unique
-  logoUrl          String?       @map("logo_url")
-  supportEmail     String?       @map("support_email")
-  isClaimed        Boolean       @default(false) @map("is_claimed")
-  reputationScore  Float         @default(0) @map("reputation_score")
-  totalEvaluations Int           @default(0) @map("total_evaluations")
-  createdAt        DateTime      @default(now()) @map("created_at")
+  slug             String            @unique
+  logoUrl          String?           @map("logo_url")
+  supportEmail     String?           @map("support_email")
+  isClaimed        Boolean           @default(false) @map("is_claimed")
+  reputationScore  Float             @default(0) @map("reputation_score")
+  totalEvaluations Int               @default(0) @map("total_evaluations")
+  createdAt        DateTime          @default(now()) @map("created_at")
   agents           CompanyUser[]
   complaints       Complaint[]
+  categories       CompanyCategory[]
 
   @@map("companies")
+}
+
+model CompanyCategory {
+  id         Int      @id @default(autoincrement())
+  companyId  Int      @map("company_id")
+  categoryId Int      @map("category_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, categoryId])
+  @@map("company_categories")
 }
 
 model CompanyUser {
@@ -84,7 +98,6 @@ model Complaint {
   id           Int             @id @default(autoincrement())
   userId       Int             @map("user_id")
   companyId    Int             @map("company_id")
-  categoryId   Int             @map("category_id")
   title        String
   description  String
   detectedLang String?         @map("detected_lang")
@@ -96,7 +109,6 @@ model Complaint {
 
   user         User          @relation(fields: [userId], references: [id])
   company      Company       @relation(fields: [companyId], references: [id])
-  category     Category      @relation(fields: [categoryId], references: [id])
   interactions Interaction[]
   evaluation   Evaluation?
 

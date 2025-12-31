@@ -58,6 +58,11 @@ export type User = Prisma.UserModel
  */
 export type Company = Prisma.CompanyModel
 /**
+ * Model CompanyCategory
+ * 
+ */
+export type CompanyCategory = Prisma.CompanyCategoryModel
+/**
  * Model CompanyUser
  * 
  */

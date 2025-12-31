@@ -55,6 +55,7 @@ export const ModelName = {
   PlatformAdmin: 'PlatformAdmin',
   User: 'User',
   Company: 'Company',
+  CompanyCategory: 'CompanyCategory',
   CompanyUser: 'CompanyUser',
   Complaint: 'Complaint',
   Interaction: 'Interaction',
@@ -81,6 +82,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const CategoryScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
+  labelEn: 'labelEn',
   labelMk: 'labelMk',
   labelSq: 'labelSq',
   createdAt: 'createdAt'
@@ -125,6 +127,16 @@ export const CompanyScalarFieldEnum = {
 export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
 
 
+export const CompanyCategoryScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  categoryId: 'categoryId',
+  createdAt: 'createdAt'
+} as const
+
+export type CompanyCategoryScalarFieldEnum = (typeof CompanyCategoryScalarFieldEnum)[keyof typeof CompanyCategoryScalarFieldEnum]
+
+
 export const CompanyUserScalarFieldEnum = {
   id: 'id',
   companyId: 'companyId',
@@ -142,7 +154,6 @@ export const ComplaintScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   companyId: 'companyId',
-  categoryId: 'categoryId',
   title: 'title',
   description: 'description',
   detectedLang: 'detectedLang',

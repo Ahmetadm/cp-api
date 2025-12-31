@@ -388,6 +388,7 @@ export const ModelName = {
   PlatformAdmin: 'PlatformAdmin',
   User: 'User',
   Company: 'Company',
+  CompanyCategory: 'CompanyCategory',
   CompanyUser: 'CompanyUser',
   Complaint: 'Complaint',
   Interaction: 'Interaction',
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "category" | "platformAdmin" | "user" | "company" | "companyUser" | "complaint" | "interaction" | "evaluation" | "otpToken"
+    modelProps: "category" | "platformAdmin" | "user" | "company" | "companyCategory" | "companyUser" | "complaint" | "interaction" | "evaluation" | "otpToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -705,6 +706,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CompanyCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CompanyCountAggregateOutputType> | number
+        }
+      }
+    }
+    CompanyCategory: {
+      payload: Prisma.$CompanyCategoryPayload<ExtArgs>
+      fields: Prisma.CompanyCategoryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CompanyCategoryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyCategoryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CompanyCategoryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyCategoryPayload>
+        }
+        findFirst: {
+          args: Prisma.CompanyCategoryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyCategoryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CompanyCategoryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyCategoryPayload>
+        }
+        findMany: {
+          args: Prisma.CompanyCategoryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyCategoryPayload>[]
+        }
+        create: {
+          args: Prisma.CompanyCategoryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyCategoryPayload>
+        }
+        createMany: {
+          args: Prisma.CompanyCategoryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CompanyCategoryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyCategoryPayload>[]
+        }
+        delete: {
+          args: Prisma.CompanyCategoryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyCategoryPayload>
+        }
+        update: {
+          args: Prisma.CompanyCategoryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyCategoryPayload>
+        }
+        deleteMany: {
+          args: Prisma.CompanyCategoryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CompanyCategoryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CompanyCategoryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyCategoryPayload>[]
+        }
+        upsert: {
+          args: Prisma.CompanyCategoryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyCategoryPayload>
+        }
+        aggregate: {
+          args: Prisma.CompanyCategoryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCompanyCategory>
+        }
+        groupBy: {
+          args: Prisma.CompanyCategoryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompanyCategoryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CompanyCategoryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompanyCategoryCountAggregateOutputType> | number
         }
       }
     }
@@ -1120,6 +1195,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const CategoryScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
+  labelEn: 'labelEn',
   labelMk: 'labelMk',
   labelSq: 'labelSq',
   createdAt: 'createdAt'
@@ -1164,6 +1240,16 @@ export const CompanyScalarFieldEnum = {
 export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
 
 
+export const CompanyCategoryScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  categoryId: 'categoryId',
+  createdAt: 'createdAt'
+} as const
+
+export type CompanyCategoryScalarFieldEnum = (typeof CompanyCategoryScalarFieldEnum)[keyof typeof CompanyCategoryScalarFieldEnum]
+
+
 export const CompanyUserScalarFieldEnum = {
   id: 'id',
   companyId: 'companyId',
@@ -1181,7 +1267,6 @@ export const ComplaintScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   companyId: 'companyId',
-  categoryId: 'categoryId',
   title: 'title',
   description: 'description',
   detectedLang: 'detectedLang',
@@ -1438,6 +1523,7 @@ export type GlobalOmitConfig = {
   platformAdmin?: Prisma.PlatformAdminOmit
   user?: Prisma.UserOmit
   company?: Prisma.CompanyOmit
+  companyCategory?: Prisma.CompanyCategoryOmit
   companyUser?: Prisma.CompanyUserOmit
   complaint?: Prisma.ComplaintOmit
   interaction?: Prisma.InteractionOmit

@@ -1,9 +1,17 @@
 import { PrismaClient } from './generated/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import * as dotenv from 'dotenv';
+import * as fs from 'fs';
+import * as path from 'path';
 
 // Load environment variables
 dotenv.config();
+
+// Load logo URLs from JSON
+const logoUrlsPath = path.join(__dirname, 'logo-urls.json');
+const companyLogos: Record<string, string> = fs.existsSync(logoUrlsPath)
+  ? JSON.parse(fs.readFileSync(logoUrlsPath, 'utf-8'))
+  : {};
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
@@ -272,17 +280,19 @@ async function main() {
   // Seed Companies
   console.log('🏢 Seeding companies...');
   for (const company of companies) {
+    const logoUrl = companyLogos[company.slug] || null;
     await prisma.company.upsert({
       where: { slug: company.slug },
-      update: { name: company.name, supportEmail: company.supportEmail },
+      update: { name: company.name, supportEmail: company.supportEmail, logoUrl },
       create: {
         name: company.name,
         slug: company.slug,
         supportEmail: company.supportEmail,
+        logoUrl,
       },
     });
   }
-  console.log(`✅ Seeded ${companies.length} companies`);
+  console.log(`✅ Seeded ${companies.length} companies (${Object.keys(companyLogos).length} with logos)`);
 
   // Seed Company-Category relationships
   console.log('🔗 Seeding company-category relationships...');

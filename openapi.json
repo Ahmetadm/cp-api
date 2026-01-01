@@ -278,6 +278,149 @@
           "auth"
         ]
       }
+    },
+    "/storage/user/profile-picture": {
+      "post": {
+        "operationId": "StorageController_uploadUserProfilePicture",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Profile picture image file (max 5MB, jpeg/png/gif/webp)"
+                  }
+                },
+                "required": [
+                  "file"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Profile picture uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid file type or size"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Upload user profile picture",
+        "tags": [
+          "storage"
+        ]
+      }
+    },
+    "/storage/company/profile-picture": {
+      "post": {
+        "operationId": "StorageController_uploadCompanyProfilePicture",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Company logo image file (max 5MB, jpeg/png/gif/webp)"
+                  }
+                },
+                "required": [
+                  "file"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Company logo uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid file type or size"
+          }
+        },
+        "summary": "Upload company profile picture/logo",
+        "tags": [
+          "storage"
+        ]
+      }
+    },
+    "/storage/complaints/files": {
+      "post": {
+        "operationId": "StorageController_uploadComplaintFile",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Complaint attachment file (max 10MB, images or PDF)"
+                  }
+                },
+                "required": [
+                  "file"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Complaint file uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid file type or size"
+          }
+        },
+        "summary": "Upload complaint attachment file",
+        "tags": [
+          "storage"
+        ]
+      }
     }
   },
   "info": {
@@ -393,6 +536,25 @@
         "required": [
           "phone",
           "code"
+        ]
+      },
+      "UploadResponseDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Public URL of the uploaded file",
+            "example": "https://your-bucket.r2.dev/users/profile-pictures/abc123.jpg"
+          },
+          "key": {
+            "type": "string",
+            "description": "Storage key of the file (used for deletion)",
+            "example": "users/profile-pictures/abc123.jpg"
+          }
+        },
+        "required": [
+          "url",
+          "key"
         ]
       }
     }

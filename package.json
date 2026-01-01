@@ -21,6 +21,7 @@
     "db:seed": "npx tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.958.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/jwt": "^11.0.2",
@@ -38,7 +39,8 @@
     "prisma": "^7.2.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "twilio": "^5.11.1"
+    "twilio": "^5.11.1",
+    "uuid": "^13.0.0"
   },
   "prisma": {
     "schema": "./prisma/schema.prisma"
@@ -51,13 +53,16 @@
     "@nestjs/testing": "^11.0.1",
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
+    "@types/multer": "^2.0.0",
     "@types/node": "^22.10.7",
     "@types/passport-jwt": "^4.0.1",
     "@types/pg": "^8.16.0",
     "@types/supertest": "^6.0.2",
+    "@types/uuid": "^10.0.0",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
+    "form-data": "^4.0.5",
     "globals": "^16.0.0",
     "jest": "^30.0.0",
     "prettier": "^3.4.2",
@@ -85,6 +90,12 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^uuid$": "uuid"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(uuid)/)"
+    ]
   }
 }

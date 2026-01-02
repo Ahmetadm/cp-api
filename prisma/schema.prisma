@@ -107,12 +107,26 @@ model Complaint {
   createdAt    DateTime        @default(now()) @map("created_at")
   updatedAt    DateTime        @updatedAt @map("updated_at")
 
-  user         User          @relation(fields: [userId], references: [id])
-  company      Company       @relation(fields: [companyId], references: [id])
+  user         User                @relation(fields: [userId], references: [id])
+  company      Company             @relation(fields: [companyId], references: [id])
   interactions Interaction[]
   evaluation   Evaluation?
+  documents    ComplaintDocument[]
 
   @@map("complaints")
+}
+
+model ComplaintDocument {
+  id          Int       @id @default(autoincrement())
+  complaintId Int       @map("complaint_id")
+  fileName    String    @map("file_name")
+  fileUrl     String    @map("file_url")
+  fileType    String    @map("file_type") // 'image' | 'document'
+  isPublic    Boolean   @default(true) @map("is_public") // true = public, false = company only
+  createdAt   DateTime  @default(now()) @map("created_at")
+  complaint   Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+
+  @@map("complaint_documents")
 }
 
 model Interaction {
